@@ -6,10 +6,12 @@ const router = express.Router();
 const uploadController = require('../controllers/upload');
 const fliter = require('../middleware/filterpost');
 const deactivateaccount = require('../middleware/deactivateaccount');
-
+ 
+router.post('/forgot-password', userController.getUserByEmail); 
 router.get('/', [auth,admin], userController.getUsers);
-router.get('/me', auth, userController.getUser);
-router.post('/add-user', userController.createUser);
+
+router.get('/:id', auth, userController.getUser); 
+router.post('/add-user', userController.createUser); // SIGNUP NEEDS NO AUTH
 router.put('/edit-user/:id', auth, userController.updateUser);
 router.delete('/delete-user/:id', [auth, admin], userController.deleteUser);
 // router.post('/create-post', [fliter,deactivateaccount], userController.createPost);

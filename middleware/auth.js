@@ -3,7 +3,7 @@ const config = require('config');
 
 module.exports = function (req, res, next) {
   const token = req.header('x-auth-token');
-  if (!token) return res.status(401).send('Access denied. No token provided.');
+  if (!token) return res.status(401).json({message:'Access denied. No token provided.'});
 
   try {
     //verify the token with the private key

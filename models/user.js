@@ -43,6 +43,10 @@ const userSchema = new mongoose.Schema({
     minlength: 8,
     maxlength: 1024
   },
+  gender:{
+    //TODO : add default profile pic
+    type:String
+  },
   profilePic:{
     //TODO : add default profile pic
     type:String
@@ -81,8 +85,8 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.generateAuthToken = function() { 
 
-  //INCLUDE: user_id, admin_status and privateKey as TOKEN PAYLOAD
-  const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, config.get('jwtPrivateKey'));
+  //INCLUDE: user_id, admin_status and privateKey as TOKEN PAYLOAD and add expiration time as well (1hr)
+  const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin, email:this.email,userName:this.userName }, config.get('jwtPrivateKey'), { expiresIn: "1h" });
   return token;
 }
 
@@ -95,9 +99,10 @@ function validateUser(user) {
     userName: Joi.string().min(2).max(50).trim().required(),
     // birthday must be a valid ISO-8601 date
     // dates before Jan 1, 2000 are not allowed ~ min user age 20
-    birthDate: Joi.date().max('1-1-2000').iso(),
+    birthDate: Joi.date().max('1-1-2020').iso(),
     email: Joi.string().min(5).max(255).trim().required().email(),
-    password: Joi.string().min(8).max(255).required(),
+    password: Joi.string().min(4).max(255).required(),
+    gender: Joi.string().required(),
     profilePic: Joi.string(),
     address: Joi.array().items(({
                 country: Joi.string().required(),

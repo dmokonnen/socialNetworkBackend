@@ -7,15 +7,23 @@ const multer = require('multer');
 const {User, validate} = require('../models/user');
 const accStatus = require('../constants/accstatus');
 const {Post} = require('../models/post');
+
+
 //ACCESS ALL USERS
 exports.getUsers =   async (req, res,next) => {
     const users = await User.find().sort('name');
     res.send(users);
   };
+//ACCESS A USER WITH ID
+exports.getUserByEmail =  async (req, res) => {
+  let user = await User.findOne({ email: req.body.email });
+  if (!user) return res.status(404).send('The user with the given email was not found.');
 
-//ACCESS A USER
+  res.json({user});
+};
+//ACCESS A USER WITH ID
 exports.getUser =  async (req, res) => {
-  const user = await User.findById(req.user._id).select('-password');
+  const user = await User.findById(req.params._id).select('-password');
   if (!user) return res.status(404).send('The user with the given ID was not found.');
   if(user && user.accountStatus!=accStatus.ACTIVE) return "The account is deactivated.";
   if(user && user.accountStatus!=accStatus.DELETED) return "The account is deleted.";
@@ -28,7 +36,7 @@ exports.createUser  =  async (req, res) => {
 
   // use joi and validate the body contents(email, password....) are valid
   const {error}  = validate(req.body);                      
-  //console.log(error.details);
+  console.log(error.details[0]);
 
   if (error) return res.status(400)
                         .send(error.details[0].message);
@@ -44,7 +52,7 @@ exports.createUser  =  async (req, res) => {
       }); 
       */
   // use loadash's utility method pick and hash the password
-  user = new User(_.pick(req.body, ['lastName','firstName','userName', 'birthDate',
+  user = new User(_.pick(req.body, ['lastName','firstName','userName', 'birthDate','gender',
                                     'email', 'password', 'profilePic','address','accountStatus','isAdmin']));
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
@@ -63,9 +71,9 @@ exports.updateUser = async (req,res)=>{
     if (error) return res.status(400).send(error.details[0].message);
 
     const user = await User.findByIdAndUpdate(req.params.id,{
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password
+         name: req.body.name,
+         email: req.body.email,
+         password: req.body.password
     },{new: true
       })
 
