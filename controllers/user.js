@@ -33,10 +33,10 @@ exports.getUser =  async (req, res) => {
 
 //CREATE A NEW USER
 exports.createUser  =  async (req, res) => {
-
   // use joi and validate the body contents(email, password....) are valid
-  const {error}  = validate(req.body);                      
-  console.log(error.details[0]);
+  const {error}  = validate(req.body);  
+  //console.log(error.details[0]);  console.log("Inside creat");         
+
 
   if (error) return res.status(400)
                         .send(error.details[0].message);
