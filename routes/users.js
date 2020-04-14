@@ -9,35 +9,33 @@ const fliter = require("../middleware/filterpost");
 const deactivateaccount = require("../middleware/deactivateaccount");
 
 router.get("/", [auth, admin], userController.getUsers);
+//TODO: image resize remaining
+router.post("/profile-image-upload", uploadController.singleUpload); // RESIZE?? or do it at fron css
 router.get("/me", auth, userController.getUser);
 router.post("/add-user", userController.createUser);
 router.put("/edit-user/:id", auth, userController.updateUser);
 router.delete("/delete-user/:id", [auth, admin], userController.deleteUser);
 // router.post('/create-post', [fliter,deactivateaccount], userController.createPost);
-router.post("/followe-user", userController.followUser);
-router.post("/unfollowe-user", userController.deleteFollowing);
+router.post("/follow-user", userController.followUser);
+router.post("/unfollow-user", userController.deleteFollowing);
 
 // ******************** FOR front end test ***********************
-router.get("/get-post/:id", postController.getPost);
-router.get("/get-posts", postController.getPosts);
+router.get("/get-post/:id", auth, postController.getPost);
+router.get("/get-posts", auth, postController.getPosts);
 router.post(
   "/add-post",
-  [uploadController.singleUpload, fliter, deactivateaccount],
+  [auth, uploadController.singleUpload, fliter, deactivateaccount],
   postController.createPost
 );
 router.put(
   "/edit-post/:id",
-  [uploadController.singleUpload, fliter, deactivateaccount],
+  [auth, uploadController.singleUpload, fliter, deactivateaccount],
   postController.updatePost
 );
-router.delete("/delete-post/:id", postController.deletePost);
-// ******************** FOR front end test ***********************
-
-//TODO: image resize remaining
-router.post("/profile-image-upload", uploadController.singleUpload); // RESIZE?? or do it at fron css
-router.post("/comment-post", uploadController.singleUpload);
-router.post("/uncomment-post", uploadController.singleUpload);
-router.post("/like-post", uploadController.singleUpload);
-router.post("/unlike-post", uploadController.singleUpload);
+router.delete("/delete-post/:id", auth, postController.deletePost);
+router.post("/comment-post", auth, uploadController.singleUpload);
+router.post("/uncomment-post", auth, uploadController.singleUpload);
+router.post("/like-post", auth, postController.likePost);
+router.post("/unlike-post", auth, postController.dislikePost);
 
 module.exports = router;

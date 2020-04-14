@@ -73,3 +73,37 @@ exports.deletePost = async (req, res) => {
 
   res.status(200).json({ message: "Post deleted." });
 };
+
+/**
+ * If user already liked the post, remove the like. If not, add into likes
+ *
+ *
+ * REQUIRES: {
+ *  postId: THE POST ID
+ * }
+ */
+exports.likePost = async (req, res, next) => {
+  // get user from request
+  // get post from request body -- id
+  const postId = req.body.postId;
+  const user = req.user;
+  if (!(postId && user)) {
+    return res.status(404).json({ message: "Invalid request" });
+  }
+  const post = await Post.findById(postId);
+  if (!post) {
+    return res.status(404).json({ message: "Post not found" });
+  }
+  if (post.likedBy.indexOf(user._id) === -1) {
+    // add the like
+    Post.updateOne({ _id: post._id }, { $addToSet: { likedBy: user._id } });
+  } else {
+    // remove the like
+    await Post.updateOne({ _id: post._id }, { $pull: { likedBy: user._id } });
+  }
+  res.status(200).json({ message: "Success" });
+};
+
+exports.dislikePost = async (req, res, next) => {
+  // get user
+};
