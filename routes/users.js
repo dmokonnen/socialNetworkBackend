@@ -9,13 +9,16 @@ const fliter = require("../middleware/filterpost");
 const deactivateaccount = require("../middleware/deactivateaccount");
 
 router.get("/", [auth, admin], userController.getUsers);
-router.get("/:id", auth, userController.getUser);
+//TODO: image resize remaining
+router.post("/profile-image-upload", uploadController.singleUpload); // RESIZE?? or do it at fron css
+router.get("/me", auth, userController.getUser);
+
 router.post("/add-user", userController.createUser);
 router.put("/edit-user/:id", auth, userController.updateUser);
 router.delete("/delete-user/:id", [auth, admin], userController.deleteUser);
 // router.post('/create-post', [fliter,deactivateaccount], userController.createPost);
-router.post("/followe-user", userController.followUser);
-router.post("/unfollowe-user", userController.deleteFollowing);
+router.post("/follow-user", userController.followUser);
+router.post("/unfollow-user", userController.deleteFollowing);
 
 router.get("/get-post/:id", postController.getPost);
 router.get("/get-posts", postController.getPosts);
@@ -23,13 +26,13 @@ router.post( "/add-post", [uploadController.singleUpload, fliter, deactivateacco
 );
 router.put(
   "/edit-post/:id",
-  [uploadController.singleUpload, fliter, deactivateaccount],
+  [auth, uploadController.singleUpload, fliter, deactivateaccount],
   postController.updatePost
 );
+
 router.delete("/delete-post/:id", postController.deletePost);
 
 //TODO: image resize remaining
-router.post("/profile-image-upload", uploadController.singleUpload); // RESIZE?? or do it at fron css
 router.post("/comment-post", uploadController.singleUpload);
 router.post("/uncomment-post", uploadController.singleUpload);
 router.post("/like-post", uploadController.singleUpload);
