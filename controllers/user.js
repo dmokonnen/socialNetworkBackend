@@ -3,7 +3,7 @@ const _ = require("lodash");
 const util = require("util");
 const path = require("path");
 const multer = require("multer");
-
+const ApiResponse = require('../models/api.response');
 const { User, validate } = require("../models/user");
 const accStatus = require("../constants/accstatus");
 
@@ -15,15 +15,23 @@ exports.getUsers = async (req, res, next) => {
 
 //ACCESS A USER
 exports.getUser = async (req, res) => {
+
   const user = await User.findById(req.user._id).select("-password");
   if (!user)
     return res.status(404).send("The user with the given ID was not found.");
-  if (user && user.accountStatus != accStatus.ACTIVE)
+  if (user && user.accountStatus === accStatus.DEACTIVATED){
+    
+    console.log("the user is deactive");
     return "The account is deactivated.";
-  if (user && user.accountStatus != accStatus.DELETED)
+  }
+    
+  if (user && user.accountStatus === accStatus.DELETED){
+    onsole.log("the user is deleted");
     return "The account is deleted.";
+}
+console.log("the user is : " + user);
 
-  res.json({ user });
+  res.status(200).send(new ApiResponse('200','success',user));
 };
 
 //CREATE A NEW USER
@@ -72,22 +80,30 @@ exports.createUser = async (req, res) => {
 //UPDATE A USER
 exports.updateUser = async (req, res) => {
   // use joi and validate the body contents(email, password....) are valid
-  const { error } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+ // const { error } = validate(req.body);
+  //if (error) return res.status(400).send(error.details[0].message);
 
-  const user = await User.findByIdAndUpdate(
-    req.params.id,
-    {
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-    },
-    { new: true }
-  );
+  // const user = await User.findByIdAndUpdate(
+  //   req.params.id)
+  //   {
+  //     name: req.body.name,
+  //     email: req.body.email,
+  //     password: req.body.password,
+  //   },
+  //   { new: true }
+  // );
+  console.log("UPDATE STARTED: INDIDE CONTROLLER"); 
+
+  const user = User.findById(req.params.userId)
+  console.log(user); 
 
   if (!user)
     return res.status(404).send("The user with the given ID was not found.");
-  res.send(user);
+
+       for (let i in req.body) {
+                user[i] = req.body[i];
+            }
+    return user.save();
 };
 
 //DELETE A USER
