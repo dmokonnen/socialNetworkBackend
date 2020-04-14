@@ -43,7 +43,7 @@ app.use((req,res,next)=>{
   res.setHeader('Access-Control-Allow-Origin','*');
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, x-auth-token, Authorization" );  // allow our token name as well here
+    "Origin, X-Requested-With, Content-Type, Accept, x-auth-token, Authorization, token, skip" );  // allow our token name as well here
     res.setHeader(
       "Access-Control-Allow-Methods",
       "GET, POST, PUT, PATCH, DELETE, OPTIONS"

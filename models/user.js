@@ -45,7 +45,9 @@ const userSchema = new mongoose.Schema({
   },
   gender:{
     //TODO : add default profile pic
-    type:String
+    type:String,
+    default:"m"
+
   },
   profilePic:{
     //TODO : add default profile pic
@@ -54,10 +56,10 @@ const userSchema = new mongoose.Schema({
   address:[
     {
       //TODO add pattern to zipcode
-      country:String,
-      state:String,
-      city:String,
-      zipcode:String
+      country:{ type: String, required: true, default:"Not Given"},
+       state:{type:String,required: true, default:"Not Given"},
+      city:{type:String,required: true, default:"Not Given"},
+      zipcode:{type:String, required: true, default:"Not Given"}
         // pattern: '^[0-9]{5}(?:-[0-9]{4})?$' //"12345" and "12345-6789");       
     }
   ],

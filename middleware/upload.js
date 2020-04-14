@@ -2,8 +2,6 @@ const util = require('util');
 const path = require('path');
 const multer = require('multer');
 
-
-
 const MIME_TYPE_MAP = {
   "image/png": "png",
   "image/jpeg": "jpg",

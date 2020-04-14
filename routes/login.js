@@ -5,7 +5,7 @@ const express = require('express');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-console.log(req.body)
+  console.log(req.body)
   //validate at the client first
   const { error } = validate(req.body); 
   if (error) return res.status(400).send(error.details[0].message);
@@ -21,8 +21,9 @@ console.log(req.body)
   const token = user.generateAuthToken(); 
   res.status(200).json({
     token:token,
-    expiresIn: 3600
-  });
+    expiresIn: 3600,
+    userId:user._id
+  }); 
 });
 
 function validate(req) {
