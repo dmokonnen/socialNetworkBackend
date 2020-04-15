@@ -16,7 +16,7 @@ exports.getUsers = async (req, res, next) => {
 //ACCESS A USER
 exports.getUser = async (req, res) => {
 
-  const user = await User.findById(req.user._id).select("-password");
+  const user = await User.findById(req.params.id).select("-password");
   if (!user)
     return res.status(404).send("The user with the given ID was not found.");
   if (user && user.accountStatus === accStatus.DEACTIVATED){
@@ -83,27 +83,30 @@ exports.updateUser = async (req, res) => {
  // const { error } = validate(req.body);
   //if (error) return res.status(400).send(error.details[0].message);
 
-  // const user = await User.findByIdAndUpdate(
-  //   req.params.id)
-  //   {
-  //     name: req.body.name,
-  //     email: req.body.email,
-  //     password: req.body.password,
-  //   },
-  //   { new: true }
-  // );
-  console.log("UPDATE STARTED: INDIDE CONTROLLER"); 
+  const user = await User.findByIdAndUpdate(
+     {_id:req.params.id},
+    {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      gender: req.body.gender,
+      address:req.body.address
+      
+      // [{
+      //     country:req.body.address.country,
+      //     state:req.body.address.sstate,
+      //     city:req.body.address.city,
+      //     zipCode:req.body.zipCode
+      // }]
+    
 
-  const user = User.findById(req.params.userId)
-  console.log(user); 
 
-  if (!user)
-    return res.status(404).send("The user with the given ID was not found.");
+    },
+    { new: true }
+  );  
 
-       for (let i in req.body) {
-                user[i] = req.body[i];
-            }
-    return user.save();
+     return  res.status(200).send(new ApiResponse(200, 'success', user));
+
 };
 
 //DELETE A USER

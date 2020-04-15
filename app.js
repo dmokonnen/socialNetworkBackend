@@ -45,6 +45,8 @@ app.use("/images", express.static(path.join("images")));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
   res.setHeader(
     "Access-Control-Allow-Headers",
 
@@ -55,6 +57,7 @@ app.use((req, res, next) => {
     );
     next(); 
 });
+
 app.use("/login", login);
 app.use("/admin", adminsRouter);
 app.use("/users", usersRouter);

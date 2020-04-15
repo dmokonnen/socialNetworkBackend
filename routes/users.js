@@ -11,7 +11,7 @@ const deactivateaccount = require("../middleware/deactivateaccount");
 router.get("/", [auth, admin], userController.getUsers);
 //TODO: image resize remaining
 router.post("/profile-image-upload", uploadController.singleUpload); // RESIZE?? or do it at fron css
-router.get("/me", auth, userController.getUser);
+router.get("/:id", auth, userController.getUser);
 
 router.post("/add-user", userController.createUser);
 router.put("/edit-user/:id", auth, userController.updateUser);
