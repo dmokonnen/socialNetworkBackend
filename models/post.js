@@ -16,7 +16,7 @@ const postSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    //required: true //commented for  test
+    required: true //commented for  test
   },
   content:{
     type : String,

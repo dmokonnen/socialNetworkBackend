@@ -100,10 +100,10 @@ exports.updateUser = async (req, res) => {
   if (!user)
     return res.status(404).send("The user with the given ID was not found.");
 
-       for (let i in req.body) {
-                user[i] = req.body[i];
-            }
-    return user.save();
+  for (let i in req.body) {
+    user[i] = req.body[i];
+  }
+  return user.save();
 };
 
 //DELETE A USER

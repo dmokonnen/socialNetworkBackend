@@ -22,8 +22,8 @@ router.post("/unfollow-user", userController.deleteFollowing);
 
 router.get("/get-post/:id", postController.getPost);
 router.get("/get-posts", postController.getPosts);
-router.post( "/add-post", [uploadController.singleUpload, fliter, deactivateaccount], postController.createPost
-);
+router.post("/add-post",[auth,uploadController.singleUpload],postController.createPost);
+// router.post( "/add-post", [uploadController.singleUpload, fliter, deactivateaccount], postController.createPost);
 router.put(
   "/edit-post/:id",
   [auth, uploadController.singleUpload, fliter, deactivateaccount],

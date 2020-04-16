@@ -19,6 +19,7 @@ exports.createPost = async (req, res, next) => {
   const post = new Post({
     content: req.body.content,
     imagePath: url + "/images/" + req.file.filename,
+    owner: req.user._id,
   });
 
   await post.save();
@@ -32,15 +33,32 @@ exports.createPost = async (req, res, next) => {
     },
   });
 };
-
-//ACCESS ALL POSTS
+// ACCESS ALL POSTS Using pagination
 exports.getPosts = async (req, res, next) => {
-  const posts = await Post.find();
-  res.status(200).json({
-    message: "Posts fetched succesfully.",
-    posts: posts,
-  });
+  const { page = 1, pagesize = 2 } = req.query;
+  try {
+    const posts = await Post.find().populate('owner')
+      .limit(pagesize * 1)
+      .skip((page - 1) * pagesize)
+      .exec();
+    const count = await Post.countDocuments();
+    res.status(200).json({
+      posts,
+      totalPages: Math.ceil(count / pagesize),
+      currentPage: page,
+      maxPosts: count
+    });
+  } catch (err) {
+    console.error(err.message);
+  }
 };
+// exports.getPosts = async (req, res, next) => {
+//   const posts = await Post.find();
+//   res.status(200).json({
+//     message: "Posts fetched succesfully.",
+//     posts: posts,
+//   });
+// };
 
 //UPDATE A POST
 exports.updatePost = async (req, res) => {
