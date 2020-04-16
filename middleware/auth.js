@@ -14,7 +14,6 @@ module.exports = function (req, res, next) {
   }
   catch (ex) {
     res.status(400).send('Invalid token.');
-    console.log("inside auth the er is: "+ex);
   }
 }
 

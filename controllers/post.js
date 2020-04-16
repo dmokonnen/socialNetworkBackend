@@ -1,4 +1,52 @@
 const { Post } = require("../models/post");
+const { User } = require("../models/user");
+const ApiResponse = require('../models/api.response');
+
+
+/**
+ * search posts based on user input
+ * 
+ */
+exports.getPostsWithQuery = async(req,res) =>{
+  
+  const filter = req.query.filter;
+  let page =  1;
+  const LIMIT = 10;
+
+  //if no criteria return all posts
+  //TODO: modify getPosts() using pagination or user the one done by deme
+  if (!filter) {
+    return getPosts(req, res);
+  }  
+
+/**
+ *     SEARCH FOR POSTS WITH A QUERY
+ * Search for the search comes form a registerd user 
+ * if so we shall include his posts as well * 
+ */   
+  const user = await User.findById(req.query.id).select("-password");
+  if (!user)
+    return res.status(404).send("The poster user with the given ID was not found.");
+    //if found, get the list of his followers and include him as well
+    const following = user.following;
+    following.push(req.params.id);
+
+    const posts = Post.find({
+                          owner: { $in: following },
+                          content: { $regex: filter, $options: "i" },   //The option "$option : i" is used to avoid the case sensitivity.
+                          isVisible: true,
+                          })
+                          .populate("owner")
+                          .sort({postTime: "desc" })
+                          .skip(LIMIT * page - LIMIT)
+                          .limit(LIMIT)
+                           .exec(); //=> {
+                          //   return callback(err, posts);
+                          // });
+                          console.log("the fetched posts are: " + posts.result);
+      return  res.status(200).send(new ApiResponse(200, 'success', posts));
+}
+
 
 //ACCESS A POST
 exports.getPost = async (req, res) => {
