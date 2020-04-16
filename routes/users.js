@@ -33,7 +33,8 @@ router.put(
 router.delete("/delete-post/:id", postController.deletePost);
 
 //TODO: image resize remaining
-router.post("/comment-post", uploadController.singleUpload);
+// router.post("/comment-post", uploadController.singleUpload);
+router.post("/comment-post", postController.commentPost);
 router.post("/uncomment-post", uploadController.singleUpload);
 router.post("/like-post", uploadController.singleUpload);
 router.post("/unlike-post", uploadController.singleUpload);

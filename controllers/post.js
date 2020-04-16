@@ -125,3 +125,30 @@ exports.likePost = async (req, res, next) => {
 exports.dislikePost = async (req, res, next) => {
   // get user
 };
+exports.commentPost = async (req, res, next) => {
+  const postId = req.body.postId;
+  const comment = req.body.comment;
+  const user = req.user;
+  console.log(req.body.comment);
+  if (!(postId)) {
+    return res.status(404).json({ message: "Invalid request" });
+  }
+  const post = await Post.findById(postId);
+  if (!post) {
+    return res.status(404).json({ message: "Post not found" });
+  } else {
+    Post.updateOne({ _id: post._id }, { $addToSet: { comments: {comment,commentedBy:user._id, commentTime: Date.now}}});
+  }
+  res.status(200).json({ message: "Success" });
+};
+
+      // type: String,
+      // maxlength: 50, // max comment length is 50
+      // commentedBy: {
+      //   type: mongoose.Schema.Types.ObjectId,
+      //   ref: "User",
+      // },
+      // commentTime: {
+      //   type: Date,
+      //   default: Date.now,
+      // }
