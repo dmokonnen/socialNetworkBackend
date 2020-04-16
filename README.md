@@ -3,4 +3,4 @@
 To start the project,  
 [ ] Clone or download  
 [ ] $ npm install  
-[ ] $ npm start
+[ ] $ mwa_social_jwtPrivateKey=socialNetworkSecureKey npm start
