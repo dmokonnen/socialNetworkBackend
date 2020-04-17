@@ -23,6 +23,6 @@ router.delete("/unhealthyword/:id", adminController.deleteUnhealthyWord);
 //TO DO: admin post related tasks
 router.post("/post-enable", adminController.getAdvert);
 router.post("/post-disable", adminController.getAdvert);
-router.get("/unhealthy-post", adminController.getAdvert);
+router.get("/unhealthyposts", adminController.getUnhealthyPosts);
 
 module.exports = router;
