@@ -4,12 +4,14 @@ const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 const login = require("./routes/login");
 
 const adminsRouter = require("./routes/admin");
 const usersRouter = require("./routes/users");
+// const postsRouter = require("./routes/posts");
 
 const app = express();
 
@@ -38,7 +40,7 @@ app.set("view engine", "ejs");
 
 app.use(logger("dev"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/images", express.static(path.join("images")));
@@ -61,6 +63,7 @@ app.use((req, res, next) => {
 app.use("/login", login);
 app.use("/admin", adminsRouter);
 app.use("/users", usersRouter);
+// app.use("/posts", postsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
