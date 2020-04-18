@@ -25,7 +25,9 @@ router.post('/', async (req, res) => {
   res.status(200).json({
     token:token,
     expiresIn: 3600,
-    userId:user._id
+    userId:user._id,
+    isAdmin:user.isAdmin
+
   }); 
 });
 
