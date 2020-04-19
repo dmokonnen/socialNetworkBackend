@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const _ = require("lodash");
 const util = require("util");
 const path = require("path");
@@ -35,7 +35,7 @@ console.log("the user is : " + user);
 };
 
 //CREATE A NEW USER
-exports.createUser = async (req, res) => {
+exports.createUser = async (req, res,next) => {
   // use joi and validate the body contents(email, password....) are valid
   const { error } = validate(req.body);
   //console.log(error.details);
@@ -61,6 +61,7 @@ exports.createUser = async (req, res) => {
       "birthDate",
       "email",
       "password",
+      "isConfirmed",
       "profilePic",
       "address",
       "accountStatus",
@@ -72,9 +73,14 @@ exports.createUser = async (req, res) => {
   await user.save();
 
   const token = user.generateAuthToken();
+  req.header.token = token;
+    // NOW LETS SEND A VERIFICATION LINK
+      next();
   res
     .header("x-auth-token", token) // custome token added
-    .send(_.pick(user, ["_id", "userName", "email", "isAdmin"]));
+    .send(_.pick(user, ["_id", "userName", "email", "isAdmin", "isConfirmed"]));
+
+
 };
 
 //UPDATE A USER

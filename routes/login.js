@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const { User } = require("../models/user");
 const express = require("express");
 const router = express.Router();
@@ -14,7 +14,10 @@ router.post('/', async (req, res) => {
     //check the email
   let user = await User.findOne({ userName: req.body.userName });
   if (!user) return res.status(400).send('Invalid user name or password.');
-
+  
+  //check if the email is confirmed
+  if(!user.isConfirrmed) res.status(401).send('The email is not verified, bad request.');
+ 
   //check the password
   const validPassword = await bcrypt.compare(req.body.password, user.password);
 
