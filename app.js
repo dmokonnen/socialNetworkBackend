@@ -20,7 +20,7 @@ mongoose.set("useCreateIndex", true);
 if (!config.get("jwtPrivateKey")) {
   console.error("FATAL ERROR: jwtPrivateKey is not defined.");
   process.exit(1);
-}
+}git 
 
 //connect to db
 //MongoDbConnectionString="mongodb+srv://damee:D6Zcd2rcyG4wiRZP@dagu-xyemm.mongodb.net/test?retryWrites=true&w=majority"
