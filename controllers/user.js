@@ -125,8 +125,6 @@ exports.deleteUser = async (req, res) => {
   res.send(user);
 };
 
-// ******************** FOR front end test ***********************
-
 //BE FOLLOWER
 exports.followUser = async (req, res) => {
   const userId = req.body._id;

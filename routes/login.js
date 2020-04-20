@@ -16,7 +16,8 @@ router.post('/', async (req, res) => {
   if (!user) return res.status(400).send('Invalid user name or password.');
   
   //check if the email is confirmed
-  if(!user.isConfirrmed) res.status(401).send('The email is not verified, bad request.');
+  console.log(user);
+  if(!user.isConfirmed) res.status(401).send('The email is not verified, bad request.');
  
   //check the password
   const validPassword = await bcrypt.compare(req.body.password, user.password);

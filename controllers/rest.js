@@ -32,7 +32,7 @@ exports.get = (request, response, next, model) => {
   query
     .then((resource) => {
       if (!resource) {
-        return next(errors.RESOURCE_NOT_FOUND());
+        return next("errors.RESOURCE_NOT_FOUND()");
       }
 
       return response.json(resource);
@@ -68,7 +68,7 @@ exports.update = (request, response, next, model) => {
   obj
     .then((resource) => {
       if (!resource) {
-        return next(errors.RESOURCE_NOT_FOUND());
+        return next("errors.RESOURCE_NOT_FOUND()");
       }
 
       // loop over the object and update the properties
@@ -92,7 +92,7 @@ exports.delete = (request, response, next, model) => {
     .then((resource) => {
       // resource not found, let's throw an error
       if (!resource) {
-        return next(errors.RESOURCE_NOT_FOUND());
+        return next("errors.RESOURCE_NOT_FOUND()");
       }
 
       return resource.remove();

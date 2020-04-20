@@ -28,13 +28,16 @@ exports.getPostsWithQuery = async(req,res) =>{
   if (!user)
     return res.status(404).send("The poster user with the given ID was not found.");
     //if found, get the list of his followers and include him as well
-    const following = user.following;
-    following.push(req.params.id);
+    const following  = user.following;
+    console.log('following ', following);
+    following.push(req.query.id);
+   // console.log(Post.find({owner:"e93dc0dbb3571788dfeaae4"}));
 
     const posts = Post.find({
                           owner: { $in: following },
-                          content: { $regex: filter, $options: "i" },   //The option "$option : i" is used to avoid the case sensitivity.
-                          isVisible: true,
+                          
+                           content: { $regex: filter, $options: "i" },
+                           isVisible: true
                           })
                           .populate("owner")
                           .sort({postTime: "desc" })
@@ -60,17 +63,19 @@ exports.getPost = async (req, res) => {
 //POST A POST
 exports.createPost = async (req, res, next) => {
   const url = req.protocol + "://" + req.get("host");
-
   // use loadash's utility method pick and hash the password
   //imagePath = url+"/images/" + req.file.filename;
   // post = new Post(_.pick(req.body, ['owner','content']));
   const post = new Post({
     content: req.body.content,
     imagePath: url + "/images/" + req.file.filename,
-  });
+    owner:req.user._id
+  });   
 
-  await post.save();
-  res.status(201).json({
+
+     await post.save();
+
+  res.status(200).json({
     message: "Post added successfully.",
     // postId: await savedPost._id
     post: {
@@ -83,11 +88,22 @@ exports.createPost = async (req, res, next) => {
 
 //ACCESS ALL POSTS
 exports.getPosts = async (req, res, next) => {
-  const posts = await Post.find();
-  res.status(200).json({
-    message: "Posts fetched succesfully.",
-    posts: posts,
-  });
+  const { page = 1, pagesize = 2 } = req.query;
+  try {
+    const posts = await Post.find().populate('owner') //.populate({ path: 'comments.commentedBy', model: 'User'})
+      .limit(pagesize * 1)
+      .skip((page - 1) * pagesize)
+      .exec();
+    const count = await Post.countDocuments();
+    res.status(200).json({
+      posts,
+      totalPages: Math.ceil(count / pagesize),
+      currentPage: page,
+      maxPosts: count
+    });
+  } catch (err) {
+    console.error(err.message);
+  }
 };
 
 //UPDATE A POST
@@ -154,4 +170,26 @@ exports.likePost = async (req, res, next) => {
 
 exports.dislikePost = async (req, res, next) => {
   // get user
+};
+
+//COMMENT POST
+exports.commentPost = async (req, res, next) => {
+
+  const postId = req.body.postId;
+  const comment = req.body.content;
+  const user = req.user;
+  console.log(req.body.content);
+  console.log("id"+req.body.postId);
+  if (!(postId)) {
+    return res.status(404).json({ message: "Invalid request" });
+  }
+  const post = await Post.findById(postId);
+  console.log("post"+post);
+  if (!post) {
+    return res.status(404).json({ message: "Post not found" });
+  } else {
+    Post.updateOne({ _id: post._id }, { $push: { comments: {comment,commentedBy:mongoose.Types.ObjectId(user._id)}}}).then(()=>{
+      res.status(200).json({ message: "Success" });
+    }).catch((err)=> console.log(err));
+  }
 };

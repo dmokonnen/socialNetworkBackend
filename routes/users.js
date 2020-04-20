@@ -29,20 +29,11 @@ router.post("/unfollow-user", userController.deleteFollowing);
 router.get("/get-posts/search", postController.getPostsWithQuery);
 router.get("/get-post/:id", postController.getPost);
 router.get("/get-posts", postController.getPosts);
-router.post( "/add-post", [uploadController.singleUpload, fliter, deactivateaccount], postController.createPost
-);
-router.put(
-  "/edit-post/:id",
-  [auth, uploadController.singleUpload, fliter, deactivateaccount],
-  postController.updatePost
-);
-
+router.post( "/add-post", [uploadController.singleUpload, auth,fliter, deactivateaccount], postController.createPost);
 router.delete("/delete-post/:id", postController.deletePost);
-
-//TODO: image resize remaining
-router.post("/comment-post", uploadController.singleUpload);
-router.post("/uncomment-post", uploadController.singleUpload);
+router.post("/comment-post", auth, postController.commentPost);
+router.put( "/edit-post/:id", [auth, uploadController.singleUpload, fliter, deactivateaccount],postController.updatePost);
+//TODO
 router.post("/like-post", uploadController.singleUpload);
-router.post("/unlike-post", uploadController.singleUpload);
 
 module.exports = router;
