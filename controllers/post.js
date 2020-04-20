@@ -69,9 +69,14 @@ exports.createPost = async (req, res, next) => {
   const post = new Post({
     content: req.body.content,
     imagePath: url + "/images/" + req.file.filename,
+<<<<<<< HEAD
     owner:req.user._id
   });   
 
+=======
+    owner: req.user._id,
+  });
+>>>>>>> 6290b6e0de70af3b82c7c16f9cedb4c0a72dca97
 
      await post.save();
 
@@ -85,12 +90,15 @@ exports.createPost = async (req, res, next) => {
     },
   });
 };
-
-//ACCESS ALL POSTS
+// ACCESS ALL POSTS Using pagination
 exports.getPosts = async (req, res, next) => {
   const { page = 1, pagesize = 2 } = req.query;
   try {
+<<<<<<< HEAD
     const posts = await Post.find().populate('owner') //.populate({ path: 'comments.commentedBy', model: 'User'})
+=======
+    const posts = await Post.find().populate('owner')
+>>>>>>> 6290b6e0de70af3b82c7c16f9cedb4c0a72dca97
       .limit(pagesize * 1)
       .skip((page - 1) * pagesize)
       .exec();
@@ -105,6 +113,13 @@ exports.getPosts = async (req, res, next) => {
     console.error(err.message);
   }
 };
+// exports.getPosts = async (req, res, next) => {
+//   const posts = await Post.find();
+//   res.status(200).json({
+//     message: "Posts fetched succesfully.",
+//     posts: posts,
+//   });
+// };
 
 //UPDATE A POST
 exports.updatePost = async (req, res) => {
@@ -171,6 +186,7 @@ exports.likePost = async (req, res, next) => {
 exports.dislikePost = async (req, res, next) => {
   // get user
 };
+<<<<<<< HEAD
 
 //COMMENT POST
 exports.commentPost = async (req, res, next) => {
@@ -180,10 +196,18 @@ exports.commentPost = async (req, res, next) => {
   const user = req.user;
   console.log(req.body.content);
   console.log("id"+req.body.postId);
+=======
+exports.commentPost = async (req, res, next) => {
+  const postId = req.body.postId;
+  const comment = req.body.comment;
+  const user = req.user;
+  console.log(req.body.comment);
+>>>>>>> 6290b6e0de70af3b82c7c16f9cedb4c0a72dca97
   if (!(postId)) {
     return res.status(404).json({ message: "Invalid request" });
   }
   const post = await Post.findById(postId);
+<<<<<<< HEAD
   console.log("post"+post);
   if (!post) {
     return res.status(404).json({ message: "Post not found" });
@@ -193,3 +217,23 @@ exports.commentPost = async (req, res, next) => {
     }).catch((err)=> console.log(err));
   }
 };
+=======
+  if (!post) {
+    return res.status(404).json({ message: "Post not found" });
+  } else {
+    Post.updateOne({ _id: post._id }, { $addToSet: { comments: {comment,commentedBy:user._id, commentTime: Date.now}}});
+  }
+  res.status(200).json({ message: "Success" });
+};
+
+      // type: String,
+      // maxlength: 50, // max comment length is 50
+      // commentedBy: {
+      //   type: mongoose.Schema.Types.ObjectId,
+      //   ref: "User",
+      // },
+      // commentTime: {
+      //   type: Date,
+      //   default: Date.now,
+      // }
+>>>>>>> 6290b6e0de70af3b82c7c16f9cedb4c0a72dca97

@@ -32,7 +32,11 @@ exports.get = (request, response, next, model) => {
   query
     .then((resource) => {
       if (!resource) {
+<<<<<<< HEAD
         return next("errors.RESOURCE_NOT_FOUND()");
+=======
+        return next(new Error("resource not found"));
+>>>>>>> 6290b6e0de70af3b82c7c16f9cedb4c0a72dca97
       }
 
       return response.json(resource);
@@ -68,7 +72,11 @@ exports.update = (request, response, next, model) => {
   obj
     .then((resource) => {
       if (!resource) {
+<<<<<<< HEAD
         return next("errors.RESOURCE_NOT_FOUND()");
+=======
+        return next(new Error("resource not found"));
+>>>>>>> 6290b6e0de70af3b82c7c16f9cedb4c0a72dca97
       }
 
       // loop over the object and update the properties
@@ -92,7 +100,11 @@ exports.delete = (request, response, next, model) => {
     .then((resource) => {
       // resource not found, let's throw an error
       if (!resource) {
+<<<<<<< HEAD
         return next("errors.RESOURCE_NOT_FOUND()");
+=======
+        return next(new Error("resource not found"));
+>>>>>>> 6290b6e0de70af3b82c7c16f9cedb4c0a72dca97
       }
 
       return resource.remove();

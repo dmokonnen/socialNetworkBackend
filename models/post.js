@@ -1,5 +1,28 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
+<<<<<<< HEAD
+=======
+
+// const commentSchema = new mongoose.Schema({
+//   commentTime: {
+//     type: Date,
+//     default: Date.now,
+//   },
+//   commentedBy: {
+//     type: mongoose.Schema.Types.ObjectId,
+//     ref: "User",
+//     required: true, //commented for  test
+//   },
+//   content: {
+//     type: String,
+//     required: true,
+//     minlength: 1,
+//     maxlength: 50, // users are allowed only 500 word of length
+//     trim: true,
+//   }
+// });
+
+>>>>>>> 6290b6e0de70af3b82c7c16f9cedb4c0a72dca97
 const postSchema = new mongoose.Schema({
   postTime: {
     type: Date,
@@ -25,6 +48,7 @@ const postSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+<<<<<<< HEAD
   comments: [
     {
       comment: {
@@ -33,6 +57,13 @@ const postSchema = new mongoose.Schema({
         maxlength: 500, // users are allowed only 500 word of length
         trim: true,
       },
+=======
+
+  comments: [
+    {
+      type: String,
+      maxlength: 50, // max comment length is 50
+>>>>>>> 6290b6e0de70af3b82c7c16f9cedb4c0a72dca97
       commentedBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
