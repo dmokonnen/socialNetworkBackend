@@ -6,6 +6,7 @@ const {
   UnhealthyWords,
   validateUnhealthylist,
 } = require("../models/unhealthywordslist");
+const { Post } = require("../models/post");
 const CRUDRest = require("./rest");
 
 //render data for users view
@@ -126,4 +127,13 @@ exports.updateUnhealthyWord = async (req, res, next) => {
  */
 exports.deleteUnhealthyWord = async (req, res, next) => {
   return CRUDRest.delete(req, res, next, UnhealthyWords);
+};
+
+/**
+ *
+ */
+exports.getUnhealthyPosts = async (req, res, next) => {
+  Post.find({ hasUnhealthy: true })
+    .then((posts) => res.json(posts))
+    .catch(next);
 };
