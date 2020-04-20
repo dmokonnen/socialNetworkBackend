@@ -6,6 +6,7 @@ const unhealthyWordsSchema = new mongoose.Schema({
     type: String,
     require: true,
     unique: true,
+    lowercase: true,
   },
 });
 
