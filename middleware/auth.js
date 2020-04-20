@@ -9,13 +9,11 @@ module.exports = function (req, res, next) {
   try {
     //verify the token with the private key
     const decoded = jwt.verify(token, config.get('jwtPrivateKey'));   
-
     req.user = decoded; 
     next();
   }
   catch (ex) {
     res.status(400).send('Invalid token.');
-    console.log("inside auth the er is: "+ex);
   }
 }
 

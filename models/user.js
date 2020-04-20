@@ -50,18 +50,19 @@ const userSchema = new mongoose.Schema({
     default:"m"
 
   },
-  profilePic:{
+  profilePic:{ 
     //TODO : add default profile pic
     type: String,
+    default: 'images/Charlie-chaplin.svg'
   },
   address: [
     {
       //TODO add pattern to zipcode
 
-      country:{ type: String, required: true, default:"Not Given"},
-       state:{type:String,required: true, default:"Not Given"},
-      city:{type:String,required: true, default:"Not Given"},
-      zipcode:{type:String, required: true, default:"Not Given"}
+      country:{ type: String, required: true, default:""},
+       state:{type:String,required: true, default:""},
+      city:{type:String,required: true, default:""},
+      zipCode:{type:String, required: true, default:""}
         // pattern: '^[0-9]{5}(?:-[0-9]{4})?$' //"12345" and "12345-6789");       
     }
   ],

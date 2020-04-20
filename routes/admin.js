@@ -6,7 +6,7 @@ const admin = require("../middleware/admin");
 const adminController = require("../controllers/admin");
 const uploadController = require("../controllers/upload");
 
-router.use([auth, admin]);
+//router.use([auth, admin]);
 router.get("/all-users", adminController.getUsers);
 router.delete("/delete-user/:id", adminController.deleteUser);
 router.put("/deactivate-user/:id", adminController.deactivateUser);
