@@ -7,8 +7,8 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
-const login = require("./routes/login");
 
+const login = require("./routes/login");
 const adminsRouter = require("./routes/admin");
 const usersRouter = require("./routes/users");
 // const postsRouter = require("./routes/posts");
@@ -22,21 +22,27 @@ mongoose.set("useCreateIndex", true);
 if (!config.get("jwtPrivateKey")) {
   console.error("FATAL ERROR: jwtPrivateKey is not defined.");
   process.exit(1);
-}git 
+}
 
 //connect to db
 //MongoDbConnectionString="mongodb+srv://damee:D6Zcd2rcyG4wiRZP@dagu-xyemm.mongodb.net/test?retryWrites=true&w=majority"
 mongoose
-  .connect("mongodb+srv://damee:D6Zcd2rcyG4wiRZP@dagu-xyemm.mongodb.net/test?retryWrites=true&w=majority",{
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  })
+.connect("mongodb://localhost/socialnetwork", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+})
+// mongoose
+//   .connect("mongodb+srv://damee:D6Zcd2rcyG4wiRZP@dagu-xyemm.mongodb.net/test?retryWrites=true&w=majority",{
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//     useFindAndModify: false,
+//   })
   .then(() => console.log("Connected to MongoDB..."))
   .catch((err) => console.error("Could not connect to MongoDB..."));
 
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
+app.set("views", path.join(__dirname, "views"));  
 app.set("view engine", "ejs");
 
 app.use(logger("dev"));

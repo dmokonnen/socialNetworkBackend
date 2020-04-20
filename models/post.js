@@ -1,10 +1,7 @@
-//post visibility
-//content
-//unhealthy status .... hasUnhealthy: set in the fliter
-//comments likes unlike uncomment
-
 const Joi = require('joi');
 const mongoose = require('mongoose');
+<<<<<<< HEAD
+=======
 
 // const commentSchema = new mongoose.Schema({
 //   commentTime: {
@@ -25,6 +22,7 @@ const mongoose = require('mongoose');
 //   }
 // });
 
+>>>>>>> 6290b6e0de70af3b82c7c16f9cedb4c0a72dca97
 const postSchema = new mongoose.Schema({
   postTime: {
     type: Date,
@@ -50,11 +48,22 @@ const postSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+<<<<<<< HEAD
+  comments: [
+    {
+      comment: {
+        type: String,
+        minlength: 1,
+        maxlength: 500, // users are allowed only 500 word of length
+        trim: true,
+      },
+=======
 
   comments: [
     {
       type: String,
       maxlength: 50, // max comment length is 50
+>>>>>>> 6290b6e0de70af3b82c7c16f9cedb4c0a72dca97
       commentedBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
@@ -88,17 +97,4 @@ const postSchema = new mongoose.Schema({
 });
 
 const Post = mongoose.model('Post', postSchema);
-//TODO: fields validation
-/*
-function validatePost(post) {
-  const schema = {
-    postTime: Joi.date(),
-    title: Joi.string().min(2).max(50).trim().required(),
-    targetCity: Joi.string().trim().required(),
-    imagesURL: Joi.string().min(5).max(255)
-  };
-  return Joi.validate(advertisement, schema);
-} */
-
-exports.Post = Post; 
-//exports.advertvalidate = validateAdvertisement;
+exports.Post = Post;

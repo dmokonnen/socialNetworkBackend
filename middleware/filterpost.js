@@ -9,6 +9,15 @@ const { User } = require("../models/user");
 module.exports = async function (req, res, next) {
   //  const {error}  = validatePost(req.body);
   //if (error) return res.status(400).send(error.details[0].message);
+  
+
+  const unhealthyWordsQuery = await UnhealthyWords . find (); 
+  let unhealthyWords = [];   
+  unhealthyWordsQuery.forEach (( word ) => unhealthyWords.push ( word.word ));
+
+  const blockedWordList = unhealthyWords;
+  console.log("the  post input is: ",req.body.content);
+  console.log("the  unhealthyWords input is: ",blockedWordList);
 
   const unhealthyWordsQuery = await UnhealthyWords.find();
   let unhealthyWords = [];
@@ -41,6 +50,7 @@ function searchUnhealthyWord(userWord, dbWordList) {
         console.log(arr2[key])
     });
     */
+
   //console.log( arr1.trim().split(" "));
   userWord = userWord.trim().split(" ");
   userWord = userWord.map((w) => w.toLowerCase());
